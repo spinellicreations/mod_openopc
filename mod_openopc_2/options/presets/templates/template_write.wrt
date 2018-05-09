@@ -1,0 +1,37 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- QUICK INFO ----------------------------------
+# THIS IS A PRESET TEMPLATE FOR ---WRITING--- ONLY.
+# --------------------- DECLARATIONS --------------------------------
+#
+[your_server]
+YOUROPCSERVER:opcname			
+# preset opc server name
+YOURSQLSERVER:sqlname			
+# preset sql server name
+# strictly for reporting faults
+#
+[your_write]
+YOURLEAFERS:LEAFIDENTIFICATION&VALUETOWRITE&|2NDLEAF&VALUETOWRITETO2NDLEAF&|
+#	preset leaves to bridge, follow form "LEAFIDENTIFICATION&|
+#	where & delineates columns in the table and | delineates rows
+#	TYPICALLY, LEAFS ARE IN THE FORM OF ...
+#		XXX[TARGETNAME]YYYTAG
+#	SUCH AS...
+#		XXX[MY_PLC]YYYN7:42
+#	SO...
+#		XXX[MY_PLC]YYYN7:42&2.5&|   ... would write value 2.5 to leaf N7:42 of MY_PLC
+#
+# -------------------------------------------------------------------

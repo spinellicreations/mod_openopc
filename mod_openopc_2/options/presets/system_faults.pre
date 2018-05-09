@@ -1,0 +1,83 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- QUICK INFO ----------------------------------
+# THIS IS A PRESET TEMPLATE FOR ---READING--- ONLY.
+# REPEAT! THIS IS FOR READING OPC DATA INTO SQL TABLES ONLY!
+# --------------------- DECLARATIONS --------------------------------
+#
+[your_server]
+YOUROPCSERVER:none			
+# preset opc server name
+DATA_SOURCE:cache
+# CHOICES ARE 'cache' or 'hybrid' (CASE SENSITIVE)
+# -- hybrid USES DIRECT DEVICE READS (HIGH CPU USAGE)
+# -- cache USES OPC SERVER OPTIMIZED CACHE READS (BEST PERFORMANCE)
+YOURSQLSERVER:mod_openopc			
+# preset sql server name
+YOURSQLTABLE:system_faults			
+# preset sql table
+COMMENTENABLE:no
+# 'yes' or 'no', if yes, then set
+#  below to presetname_comment, or name
+#  of table holding the comments.
+#  if no, set below to 'none'
+YOURSQLCOMMENTTABLE:none
+# preset sql table
+# correspondes to comments for this preset.
+# comment column counts as a filler column,
+# so do NOT include a comment column as
+# part of the sqlcolumncount, rather, count
+# it as part of the fillercount.
+YOURSQLFILLERCOUNT:0
+# integer number, corresponding to the 
+# number of empty cells of columns left
+# at the right hand side of your table.
+# this is useful for inserting partial 
+# records.  set to 0 if you're not
+# using it, or if your leafers will
+# fill up entire row in table.
+YOURSQLCOLUMNCOUNT:0
+# integer number, corresponding to the
+# number of columns per row of your sql
+# table... note that this requires all
+# rows to fill with the same number of
+# columns. DO NOT INCLUDE FILLER COLUMNS!
+#
+[your_read]
+YOURLEAFERS:none
+#	preset leaves to read, follow form LEAFIDENTIFICATION&|
+#	where & delineates columns in the table and | delineates rows
+#	TYPICALLY, LEAFS ARE IN THE FORM OF ...
+#		XXX[TARGETNAME]YYYTAG
+#	SUCH AS... 
+#		MY_FAVORITE_PLC, TAG N7:42 would be listed as
+#		XXX[MY_FAVORITE_PLC]YYYN7:42
+#	FOR EXAMPLE... 
+#		YOURLEAFERS:XXX[MY_PLC_1]YYYN7:20&XXX[MY_PLC_1]YYYN7:21&|
+YOURFORGEDMACHINENAMES:LAB_ROT_0001.TP.Operations|LAB_ROT_0001.TP.Setpoints|
+# machine names can be forged (added to deal with shitty
+# OPC servers that don't allow alias topic creation).
+# in order to do so, you must identify one forged name
+# for each row of leaves, delineated by | (a pipe).
+# using the example from 'YOURLEAFERS', above, it might be...
+#	FOR EXAMPLE... 
+#		YOURLEAFERS:XXX[MY_PLC_1]YYYN7:20&XXX[MY_PLC_1]YYYN7:21&|XXX[MY_PLC_2]YYYN7:33&XXX[MY_PLC_2]YYYN7:34&|
+#		YOURFORGEDMACHINENAMES:FORGED_NAME_FOR_MY_PLC_1|FORGED_NAME_FOR_MY_PLC_2|
+# to disable or not utilize this function (which is suggested)
+# then simply enter NONE...
+#	FOR EXAMPLE...
+#		YOURFORGEDMACHINENAMES:NONE
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------

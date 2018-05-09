@@ -1,0 +1,76 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- QUICK INFO ----------------------------------
+# Each OPC server must have its own configuration file.
+# To make a new file, simply copy this file, and edit the parameters
+#   to suit your needs.
+#
+#          path/options/server_configs/cheese.opc
+#
+#		... should contain info about the server which
+#		    is named 'cheese' in network queries.
+#
+# You will have one config file PER opc server ... CASE SENSITIVE
+#
+# --------------------- DECLARATIONS --------------------------------
+#
+[opc_server_configs]
+IP_OF_GATEWAY_FOR_SERVER:myopc.mysite.com		
+# SERVER IP ADDRESS
+SERVER_NAME:OPCServerName		
+# SERVER NAME WHEN QUERIED
+SERVER_TEST:PLCOPCIDENTITYXX:yy	
+# DESIGNATED TEST PLC AND TAG TO READ
+MINIMUM_SCAN_INTERVAL:5			
+# INTEGER INDICATES SMALLEST AMOUNT
+#   OF TIME BETWEEN READ ROUTINES THAT
+#   ARE ON A SCHEDULE SO WE DON'T 
+#   POUND A SERVER UNDER HEAVY LOAD
+OPC_DEVICENAME_START_TRIM:1
+OPC_DEVICENAME_END_TRIM:1
+# NUMBER OF CHARACTERS TO TRIM FROM THE
+#   START AND END OF AN OPC DEVICE NAME
+#   FOR EXAMPLE...
+#   -  (RSLinx)
+#      [MYPLC1]N7:10
+#      - DEVICE NAME IS ACTUALLY "MYPLC1"
+#	   NOT [MYPLC1], SO WE SET VALUE OF "1"
+#	   FOR START_TRIM and VALUE OF "1" FOR
+#	   END_TRIM.
+#   -  (Kepware)
+#	  CH1.MYPLC1.N7:10
+#	  - DEVICE NAME IS ACTUALLY "MYPLC1"
+#	    NOT "CH1.MYPLC1.", SO WE SET VALUE
+#	    OF "4" FOR START_TRIM AND VALUE OF
+#	    "0" FOR END_TRIM.	
+SERVER_STOP_CMD_LINE_INPUT:net stop RSLinx
+# COMMAND ISSUED VIA COMMAND LINE (SHELL / POWER SHELL / DOS
+# PROMPT / ETC) ON REMOTE MACHINE TO STOP OR KILL THIS OPC
+# SERVER.
+#	- enter "none" if not using SERVER_RESTART_WITH_GATEWAY
+SERVER_START_CMD_LINE_INPUT:net start RSLinx
+# COMMAND ISSUED VIA COMMAND LINE (SHELL / POWER SHELL / DOS
+# PROMPT / ETC) ON REMOTE MACHINE TO START UP THIS OPC
+# SERVER.
+#	- enter "none" if not using SERVER_RESTART_WITH_GATEWAY
+SERVER_RESTART_WITH_GATEWAY:yes
+# WOULD YOU LIKE TO RESTART THIS SERVER (STOP / START)
+# ALONG WITH THE GATEWAY, WHEN DOING A GATEWAY_RESET ?
+# 	- "yes" OR "no"			
+#
+# You may use the Gateway Service or Direct Connect on a Local
+# machine, and only Gateway Service on a Remote box.
+#
+# -------------------------------------------------------------------

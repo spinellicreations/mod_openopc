@@ -1,0 +1,67 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- DECLARATIONS and FLAGS ----------------------
+#
+# --------------------- RUNTIME -------------------------------------
+[global_runtime]
+MINIMALRESPONSE:YES
+# minimal system echoes back for pulling in data and spitting out data
+#   to the opc server.
+# -- use YES for minimal
+# -- use NO for verbose
+# --------------------- THROTTLING LOAD HANDLING --------------------
+[global_throttle]
+GROUPBUILD_TIMEOUT_OVERRIDE:30
+# timeout value, in seconds.
+# -- suggested as 30 seconds or greater.
+# --------------------- NETWORK CONNECTIONS -------------------------
+[global_network]
+MYIP:127.0.0.1			
+# what is your CU static IP address?
+MYDEFAULTGATEWAY:192.168.0.254
+# what is your CU default gateway IP address?
+# --------------------- OPENOPC OPTIONS -----------------------------
+[global_openopc]
+OPENOPC_TIE_IN:GATEWAY
+# define as GATEWAY unless building custom deployment.
+# ---------------------- AUTO LAUNCH --------------------------------
+[auto_launch]
+AUTO_LAUNCH:READ_DAEMON,thundercracker_rslinx_read|WRITE_DAEMON,thundercracker_rslinx_write|BRIDGE,mozz_pkg_case_pack_a,3,OVERRIDE|BRIDGE,mozz_pkg_case_pack_b,3,OVERRIDE|BRIDGE,mozz_pkg_case_pack_c,3,OVERRIDE|BRIDGE,ric_fn_pkg_spotpack_2,3,OVERRIDE|BRIDGE,ric_fn_pkg_spotpack_3,3,OVERRIDE|BRIDGE,vinegar_batching_0,3,OVERRIDE|BRIDGE,mozz_recovered_caustic_0,5,OVERRIDE|READ,tankmodel_0,30|READ,tankmodel_1,30|READ,tankmodel_2,30|READ,tankmodel_agitator_0,30|READ,tankmodel_agitator_1,30|READ,atmosphericmodel_0,300|READ,atmosphericmodel_1,300|READ,atmosphericmodel_2,300|READ,bulkmodel_0,600|READ,cipmodel_0,30|READ,cipmodel_1,30|READ,cipmodel_2,30|READ,cipmodel_3,30|READ,cipmodel_4,30|READ,cipmodel_5,30|READ,cipmodel_6,30|READ,spfmodel_0,30|READ,spfmodel_1,30|READ,spfmodel_2,30|READ,thinchart_0,30|READ,thinchart_1,30|READ,thinchart_2,30|READ,warrior_0,15|READ,warrior_1,15|READ,warrior_2,15
+#define mod_openopc routines to auto launch
+# -- form is COMMAND,preset-file-name,argument1,argument2,argument3|COMMAND,preset-file-name,argument1,argument2,argument3
+# -- DO NOT use any spaces.  
+# -- DO NOT use a trailing pipe.
+# -- if a COMMAND does not have any arguments, then it would simply be...
+#       COMMAND,preset-file|COMMAND,preset-file,argument1|COMMAND,preset-file,argument1,argument2|
+#	... you get the idea.
+#	... ultimately everything between 'pipes' is passed as a newly spawned process
+#	    where commas are replaced by whitespace.  So, the example above would be passed as...
+#		--> mod_openopc.py COMMAND preset-file
+#		--> mod_openopc.py COMMAND preset-file argument-1
+#		--> mod_openopc.py COMMAND preset-file argument-1 argument-2
+[gateway_reset]
+GATEWAY_LIST_TO_RESET:RSA_GW1,30,24
+# define mod_openopc gateways to auto reset
+# -- form is GATEWAYNAME,DISCONNECT-DELAY,RECYCLE-FREQUENCY-IN-HOURS|GATEWAYNAME2,DISCONNECT-DELAY2,RECYCLE-FREQUENCY-IN-HOURS2
+# -- DO NOT use any spaces, or qualified DNS name.
+# -- DO NOT use any spaces.
+# -- DO NOT use a trailing pipe.
+# -- for example...
+#	if you have 2 gateways, gw1 and gw2, and you want to reset gw1
+#	every 2 days with a delay of 30 seconds to allow clients to clean up,
+#	and gw2 every 1 day with a 60 second disconect delay, then you'll use...
+#		gw1,30,48|gw2,60,24
+# -- set to 'NONE' to disable
+# -------------------------------------------------------------------

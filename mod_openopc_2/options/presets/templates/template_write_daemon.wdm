@@ -1,0 +1,31 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- QUICK INFO ----------------------------------
+# THIS IS A PRESET TEMPLATE FOR ---DAEMON WRITE--- ONLY.
+# --------------------- DECLARATIONS --------------------------------
+#
+[your_server]
+YOUROPCSERVER:name_of_opc_server
+# preset opc server name
+YOURSQLSERVER:name_of_sql_server
+# preset sql server name
+# strictly for reporting faults
+#
+[your_daemon]
+YOURDAEMON:subdirectory_in_GWCOMM_directory
+# where flatfiles will be exported to by 
+# other programs, in order to call for a WRITE.
+#
+# -------------------------------------------------------------------

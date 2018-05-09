@@ -1,0 +1,96 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- QUICK INFO ----------------------------------
+# THIS IS A PRESET TEMPLATE FOR ---SPACE BRIDGES--- ONLY.
+# REPEAT! THIS IS FOR BRIDGING TWO OPC DEVICES ACROSS NETWORKS ONLY!
+#
+# A SPACE BRIDGE IS A UNIQUE mod_openopc BRIDGE ALLOWING YOU TO READ
+# FROM AN OPC DEVICE ON NETWORK / OPC SERVER "A" AND THEN WRITE TO
+# ANOTHER OPC DEVICE ON A DIFFERENT NETWORK / DIFFERENT OPC SERVER
+# "B" VIA THE USE OF THE mod_openopc WRITE DAEMON FOR 3rd PARTY
+# MODULES.
+# --------------------- DECLARATIONS --------------------------------
+#
+[your_server]
+YOUROPCSERVER:grimlock
+DATA_SOURCE:cache
+# CHOICES ARE 'cache' or 'hybrid' (CASE SENSITIVE)
+# -- hybrid USES DIRECT DEVICE READS (HIGH CPU USAGE)
+# -- cache USES OPC SERVER OPTIMIZED CACHE READS (BEST PERFORMANCE)
+YOURSQLSERVER:mod_openopc		
+# SQL SERVER JUST FOR LOGGING FAULTS
+YOURSPACEBRIDGE:grimlock_hmi
+# mod_openopc WRITE_DAEMON instance where the gathered data
+#      shall be exported to.
+#
+# CLARIFICATION ON THE SPACE BRIDGE (if you're still confused)...
+# -- YOUROPCSERVER = opc server for device you want to READ from
+# -- -- will contain 'YOURLEAFERS'
+# -- YOURSPACEBRIDGE = opc server WRITE_DAEMON for device to want
+# -- -- to write to, and will contain 'YOURLEAFERS2'
+# -- SPACE BRIDGES ARE ONE WAY...
+# -- -- if you want to send data in both directions, then you
+# -- -- must create and run two space bridge presets...
+# -- -- -- for example, 
+# -- -- -- -- myspacebridge1.sbrg will read from opc device A
+# -- -- -- -- and write to opc device B.
+# -- -- -- -- myspacebridge2.sbrg will read from opc device B
+# -- -- -- -- and write to opc device A.
+#
+[your_bridge]
+YOURLEAFERS:XXX[RSPC_MILK_SEPARATORS]YYYB3:1/5&XXX[RSPC_MILK_SEPARATORS]YYYB3:1/6&|
+YOURLEAFERS2:XXX[RSPC_WHEY_SEPARATORS]YYYB3:1/7&XXX[RSPC_WHEY_SEPARATORS]YYYB3:1/8&|
+YOURBRIDGELENGTH:2
+#	YOURLEAFERS - the SOURCE data points or registers
+#	YOURLEAFERS2 - the TARGET data points or registers
+#
+#	preset leaves to bridge, follow form "LEAFIDENTIFICATION&|
+#	where & delineates columns in the table and | delineates rows
+#	TYPICALLY, LEAFS ARE IN THE FORM OF ...
+#		XXX[TARGETNAME]YYYTAG
+#	SUCH AS...
+#		XXX[MY_PLC]YYYN7:42
+#
+#	BE ADVISED... YOU MUST ENSURE REGISTER (TAG) COMPATABILITY 
+#		BEFORE YOU BRIDGE.  mod_Open_Opc will not check!
+#			For Example...
+#				x - Integers can copy to Floats
+#				x - Floats can't copy to Integers
+#					(they should round though)
+#				x - DINT's can copy to INT's
+#				x - INT's can't copy to DINT's
+#				x - STRING can copy to STRING
+#				x - STRING can't copy to anything else
+#				    you get the idea...
+#				x - BIT is cleanest at word level but can be discrete
+#				x - INT and DINT should copy at word level but you can 
+#				    perform discrete copies as well.
+#				x - ELEMENTS (such as T4:10.PRE) can 
+#					copy directly, you don't have to
+#					bridge the entire Timer.
+#
+#	BRIDGE LENGTH ... the number of leaves in a bridge set.  All
+#			  sets must be of the same length, or else
+#			  you will have to not 'use' sets, and, rather
+#			  just have one very big set.  Using sets gives
+#			  you fault detection and the ability to jump
+#		  	  over leaves attached to equipment that may be
+#			  powered down or not working.
+#			  A set is the full string of leaves up until
+#			  the '&|' separator.  Counting starts
+#			  at 1, not zero, so if you have 9 items, then
+#			  list it as "9", not "8".
+#
+# -------------------------------------------------------------------

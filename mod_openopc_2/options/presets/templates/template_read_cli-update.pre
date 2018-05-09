@@ -1,0 +1,91 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- QUICK INFO ----------------------------------
+# THIS IS A PRESET TEMPLATE FOR ---READING--- USING THE 'UPDATE'
+# COMMAND LINE ARGUMENT ONLY.
+# REPEAT! THIS IS FOR READING OPC DATA INTO SQL TABLES AND RETAINING
+# ONLY ONE RECORD ONLY!
+# --------------------- DECLARATIONS --------------------------------
+#
+[your_server]
+YOUROPCSERVER:opcname			
+# preset opc server name
+DATA_SOURCE:cache
+# CHOICES ARE 'cache' or 'hybrid' (CASE SENSITIVE)
+# -- hybrid USES DIRECT DEVICE READS (HIGH CPU USAGE)
+# -- cache USES OPC SERVER OPTIMIZED CACHE READS (BEST PERFORMANCE)
+YOURSQLSERVER:sqlname			
+# preset sql server name, required even if using flat-files (text files)
+# for logging data.
+YOURSQLTABLE:sqltable			
+# preset sql table, or (in the case of logging to a flat (text)
+# file), enter the full file path name, where the file ends with '.log',
+# (ie. /root/storage/mylogfile.log)
+# ... this is case sensitive, meaning that '.log' is the only acceptable
+# extentsion for a flat-file, not '.LOG' or '.Log' or any other variant.
+# ... when using flat-files, values are split with ',' commas and
+# rows (or lines) are split with ';' semi-colons.
+COMMENTENABLE:no
+# 'yes' or 'no', if yes, then set
+#  below to presetname_comment, or name
+#  of table holding the comments.
+#  if no, set below to 'none'
+YOURSQLCOMMENTTABLE:none
+# preset sql table
+# correspondes to comments for this preset.
+# comment column counts as a filler column,
+# so do NOT include a comment column as
+# part of the sqlcolumncount, rather, count
+# it as part of the fillercount.
+YOURSQLFILLERCOUNT:0
+# integer number, corresponding to the 
+# number of empty cells of columns left
+# at the right hand side of your table.
+# this is useful for inserting partial 
+# records.  set to 0 if you're not
+# using it, or if your leafers will
+# fill up entire row in table.
+YOURSQLCOLUMNCOUNT:0
+# integer number, corresponding to the
+# number of columns per row of your sql
+# table... note that this requires all
+# rows to fill with the same number of
+# columns. DO NOT INCLUDE FILLER COLUMNS!
+YOURSQLCOLUMNDATESTAMP:DATESTAMP
+# case sensitive name of the column in your
+# mysql database which contains the datestamp
+# of records logged - this should be the first
+# column!
+YOURSQLCOLUMNLEAFNAME:MACHINENAME
+# case sensitive name of the column in your
+# mysql database which contains the leaf_name
+# (also called 'leaf_sql_name' or 'machine name')
+# of records logged - this should be the second
+# column, and will be easily identified as it is
+# the column where all of your OPC_TOPIC names
+# are logged.
+#
+[your_read]
+YOURLEAFERS:LEAFIDENTIFICATION&ANOTHERLEAF&|2NDROWLEAF1&2NDROWLEAF2&|
+#	preset leaves to read, follow form LEAFIDENTIFICATION&|
+#	where & delineates columns in the table and | delineates rows
+#	TYPICALLY, LEAFS ARE IN THE FORM OF ...
+#		XXX[TARGETNAME]YYYTAG
+#	SUCH AS... 
+#		MY_FAVORITE_PLC, TAG N7:42 would be listed as
+#		XXX[MY_FAVORITE_PLC]YYYN7:42
+#	FOR EXAMPLE... 
+#		YOURLEAFERS:XXX[MY_PLC_1]YYYN7:20&XXX[MY_PLC_1]YYYN7:21&|
+# -------------------------------------------------------------------

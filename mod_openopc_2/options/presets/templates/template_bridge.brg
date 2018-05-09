@@ -1,0 +1,73 @@
+# -------------------------------------------------------------------
+# mod_openopc	
+# -------------------------------------------------------------------
+# ... integrating the Python OpenOPC project to run HMI
+#     over Linux, BSD, any Unix, and now Shitty Windows
+#     in an unfettered manner.
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+# COPYRIGHT
+#
+# SEE README FILE FOR COPYRIGHT INFORMATION
+# -------------------------------------------------------------------
+# -------------------------------------------------------------------
+#
+# --------------------- QUICK INFO ----------------------------------
+# THIS IS A PRESET TEMPLATE FOR ---BRIDGING--- ONLY.
+# REPEAT! THIS IS FOR BRIDGING TWO OPC DEVICES ONLY!
+# --------------------- DECLARATIONS --------------------------------
+#
+[your_server]
+YOUROPCSERVER:grimlock
+DATA_SOURCE:cache
+# CHOICES ARE 'cache' or 'hybrid' (CASE SENSITIVE)
+# -- hybrid USES DIRECT DEVICE READS (HIGH CPU USAGE)
+# -- cache USES OPC SERVER OPTIMIZED CACHE READS (BEST PERFORMANCE)
+YOURSQLSERVER:modopenopc
+# SQL SERVER JUST FOR LOGGING FAULTS
+#
+[your_bridge]
+YOURLEAFERS:XXX[MY_PLC_1]YYYF11:11&XXX[MY_PLC_1]YYYF11:41&|
+YOURLEAFERS2:XXX[MY_PLC_2]YYYF11:48&XXX[MY_PLC_2]YYYF11:49&|
+YOURBRIDGELENGTH:2
+#	YOURLEAFERS - the SOURCE data points or registers
+#	YOURLEAFERS2 - the TARGET data points or registers
+#
+#	preset leaves to bridge, follow form "LEAFIDENTIFICATION&|
+#	where & delineates columns in the table and | delineates rows
+#	TYPICALLY, LEAFS ARE IN THE FORM OF ...
+#		XXX[TARGETNAME]YYYTAG
+#	SUCH AS...
+#		XXX[MY_PLC]YYYN7:42
+#
+#	BE ADVISED... YOU MUST ENSURE REGISTER (TAG) COMPATABILITY 
+#		BEFORE YOU BRIDGE.  mod_Open_Opc will not check!
+#			For Example...
+#				x - Integers can copy to Floats
+#				x - Floats can't copy to Integers
+#					(they should round though)
+#				x - DINT's can copy to INT's
+#				x - INT's can't copy to DINT's
+#				x - STRING can copy to STRING
+#				x - STRING can't copy to anything else
+#				    you get the idea...
+#				x - BIT is cleanest at word level but can be discrete
+#				x - INT and DINT should copy at word level but you can 
+#				    perform discrete copies as well.
+#				x - ELEMENTS (such as T4:10.PRE) can 
+#					copy directly, you don't have to
+#					bridge the entire Timer.
+#
+#	BRIDGE LENGTH ... the number of leaves in a bridge set.  All
+#			  sets must be of the same length, or else
+#			  you will have to not 'use' sets, and, rather
+#			  just have one very big set.  Using sets gives
+#			  you fault detection and the ability to jump
+#		  	  over leaves attached to equipment that may be
+#			  powered down or not working.
+#			  A set is the full string of leaves up until
+#			  the '&|' separator.  Counting starts
+#			  at 1, not zero, so if you have 9 items, then
+#			  list it as "9", not "8".
+#
+# -------------------------------------------------------------------
